@@ -41,14 +41,31 @@
     .radio-group {
       display: flex;
       justify-content: center;
-      gap: 30px;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
       margin-bottom: 20px;
     }
     
     .radio-label {
       display: flex;
+      flex-direction: column;
       align-items: center;
       cursor: pointer;
+      max-width: 300px;
+      text-align: center;
+    }
+    
+    .radio-option {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+    
+    .radio-description {
+      font-size: 13px;
+      color: #666;
+      font-style: italic;
     }
     
     input[type="radio"] {
@@ -178,12 +195,6 @@
       .calculator-container {
         padding: 15px;
       }
-      
-      .radio-group {
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-      }
     }
   </style>
 </head>
@@ -195,12 +206,22 @@
       <div class="section-title">Calculation Basis</div>
       <div class="radio-group">
         <label class="radio-label">
-          <input type="radio" name="calculationBasis" id="basis247" value="24/7">
-          24/7 (8760 hrs/yr)
+          <div class="radio-option">
+            <input type="radio" name="calculationBasis" id="basis247" value="24/7">
+            24/7 (8760 hrs/yr)
+          </div>
+          <div class="radio-description">
+            For e-commerce websites and businesses that operate around the clock
+          </div>
         </label>
         <label class="radio-label">
-          <input type="radio" name="calculationBasis" id="basisBusiness" value="business" checked>
-          Business Hours (2080 hrs/yr)
+          <div class="radio-option">
+            <input type="radio" name="calculationBasis" id="basisBusiness" value="business" checked>
+            Business Hours (2080 hrs/yr)
+          </div>
+          <div class="radio-description">
+            For typical 9-5 businesses with standard working hours
+          </div>
         </label>
       </div>
     </div>
