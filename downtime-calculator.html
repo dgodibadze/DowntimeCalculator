@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IT Downtime Cost Calculator</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    
+    .calculator-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    h1 {
+      font-size: 24px;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    
+    .calculator-section {
+      margin-bottom: 15px;
+    }
+    
+    .section-title {
+      font-size: 18px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    
+    .radio-group {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 20px;
+    }
+    
+    .radio-label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    
+    input[type="radio"] {
+      margin-right: 8px;
+    }
+    
+    .input-group {
+      margin-bottom: 15px;
+    }
+    
+    .input-label {
+      display: block;
+      font-size: 16px;
+      text-align: center;
+      margin-bottom: 5px;
+    }
+    
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+    
+    input[type="text"]::placeholder {
+      color: #aaa;
+    }
+    
+    .toggle-advanced {
+      text-align: center;
+      margin: 15px 0;
+    }
+    
+    .toggle-button {
+      background: none;
+      border: none;
+      color: #4a6cf7;
+      font-weight: 500;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    
+    .toggle-button:hover {
+      text-decoration: underline;
+    }
+    
+    .advanced-options {
+      display: none;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #eee;
+    }
+    
+    .button-group {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    
+    .calculate-button {
+      padding: 10px 20px;
+      background-color: #4a6cf7;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    
+    .calculate-button:hover {
+      background-color: #3a5ce6;
+    }
+    
+    .reset-button {
+      padding: 10px 20px;
+      background-color: #6c757d;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    
+    .reset-button:hover {
+      background-color: #5a6268;
+    }
+    
+    .results {
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    
+    .results-title {
+      font-size: 20px;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    
+    .results-content {
+      text-align: center;
+    }
+    
+    .result-item {
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+    
+    .total-cost {
+      font-weight: 700;
+      font-size: 18px;
+      margin-top: 10px;
+    }
+    
+    .results-placeholder {
+      font-style: italic;
+      color: #6c757d;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+      .calculator-container {
+        padding: 15px;
+      }
+      
+      .radio-group {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator-container">
+    <h1>IT Downtime Cost Calculator</h1>
+    
+    <div class="calculator-section">
+      <div class="section-title">Calculation Basis</div>
+      <div class="radio-group">
+        <label class="radio-label">
+          <input type="radio" name="calculationBasis" id="basis247" value="24/7">
+          24/7 (8760 hrs/yr)
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="calculationBasis" id="basisBusiness" value="business" checked>
+          Business Hours (2080 hrs/yr)
+        </label>
+      </div>
+    </div>
+    
+    <div class="input-group">
+      <label class="input-label">Annual Revenue ($)</label>
+      <input type="text" id="annualRevenue" placeholder="Enter annual revenue">
+    </div>
+    
+    <div class="input-group">
+      <label class="input-label">Downtime Duration (hours)</label>
+      <input type="text" id="downtimeDuration" placeholder="Enter downtime duration">
+    </div>
+    
+    <div class="input-group">
+      <label class="input-label">Number of Affected Employees</label>
+      <input type="text" id="affectedEmployees" placeholder="Enter number of affected employees">
+    </div>
+    
+    <div class="input-group">
+      <label class="input-label">Average Hourly Wage ($)</label>
+      <input type="text" id="hourlyWage" placeholder="Enter average hourly wage">
+    </div>
+    
+    <div class="toggle-advanced">
+      <button class="toggle-button" id="toggleAdvanced">Show Advanced Options</button>
+    </div>
+    
+    <div class="advanced-options" id="advancedOptions">
+      <div class="input-group">
+        <label class="input-label">Annual Overhead Cost ($) (Optional)</label>
+        <input type="text" id="annualOverhead" placeholder="Enter annual overhead costs">
+      </div>
+      
+      <div class="input-group">
+        <label class="input-label">Profit Margin (%) (Optional)</label>
+        <input type="text" id="profitMargin" placeholder="Enter profit margin percentage">
+      </div>
+      
+      <div class="input-group">
+        <label class="input-label">Compliance/Penalty Cost ($) (Optional)</label>
+        <input type="text" id="compliancePenalty" placeholder="Enter compliance or penalty costs">
+      </div>
+    </div>
+    
+    <div class="button-group">
+      <button class="calculate-button" id="calculateButton">Calculate</button>
+      <button class="reset-button" id="resetButton">Reset</button>
+    </div>
+    
+    <div class="results" id="results">
+      <div class="results-title">Downtime Cost Breakdown</div>
+      <div class="results-content" id="resultsContent">
+        <div class="results-placeholder">Enter values and click Calculate to see results</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get all DOM elements
+      const calculationBasisRadios = document.querySelectorAll('input[name="calculationBasis"]');
+      const annualRevenueInput = document.getElementById('annualRevenue');
+      const downtimeDurationInput = document.getElementById('downtimeDuration');
+      const affectedEmployeesInput = document.getElementById('affectedEmployees');
+      const hourlyWageInput = document.getElementById('hourlyWage');
+      const annualOverheadInput = document.getElementById('annualOverhead');
+      const profitMarginInput = document.getElementById('profitMargin');
+      const compliancePenaltyInput = document.getElementById('compliancePenalty');
+      const toggleAdvancedButton = document.getElementById('toggleAdvanced');
+      const advancedOptionsDiv = document.getElementById('advancedOptions');
+      const calculateButton = document.getElementById('calculateButton');
+      const resetButton = document.getElementById('resetButton');
+      const resultsContent = document.getElementById('resultsContent');
+      
+      // Format number with commas
+      function formatNumberWithCommas(value) {
+        if (!value && value !== 0) return '';
+        
+        // Remove existing commas
+        const numStr = value.toString().replace(/,/g, '');
+        
+        // Split by decimal point
+        const parts = numStr.split('.');
+        
+        // Format the integer part with commas
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        
+        // Join with decimal part if it exists
+        return parts.length > 1 ? parts.join('.') : parts[0];
+      }
+      
+      // Parse formatted number to remove commas
+      function parseFormattedNumber(str) {
+        if (!str) return 0;
+        return parseFloat(str.replace(/,/g, ''));
+      }
+      
+      // Add input event listeners to format numbers with commas
+      const formatInputs = [annualRevenueInput, downtimeDurationInput, affectedEmployeesInput, 
+                           hourlyWageInput, annualOverheadInput, profitMarginInput, compliancePenaltyInput];
+      
+      formatInputs.forEach(input => {
+        input.addEventListener('input', function(e) {
+          // Store cursor position
+          const cursorPos = this.selectionStart;
+          const value = this.value;
+          
+          // Remove non-numeric characters except decimal point
+          const cleanValue = value.replace(/[^\d.]/g, '');
+          
+          // Count commas before cursor position
+          const commasBefore = (value.substring(0, cursorPos).match(/,/g) || []).length;
+          
+          // Format with commas
+          this.value = formatNumberWithCommas(cleanValue);
+          
+          // Adjust cursor position based on added/removed commas
+          const newCommasBefore = (this.value.substring(0, cursorPos).match(/,/g) || []).length;
+          const cursorAdjustment = newCommasBefore - commasBefore;
+          this.setSelectionRange(cursorPos + cursorAdjustment, cursorPos + cursorAdjustment);
+        });
+      });
+      
+      // Toggle advanced options
+      toggleAdvancedButton.addEventListener('click', function() {
+        if (advancedOptionsDiv.style.display === 'block') {
+          advancedOptionsDiv.style.display = 'none';
+          toggleAdvancedButton.textContent = 'Show Advanced Options';
+        } else {
+          advancedOptionsDiv.style.display = 'block';
+          toggleAdvancedButton.textContent = 'Hide Advanced Options';
+        }
+      });
+      
+      // Calculate downtime cost
+      calculateButton.addEventListener('click', function() {
+        // Get calculation basis
+        let calculationBasis = 'business';
+        calculationBasisRadios.forEach(radio => {
+          if (radio.checked) {
+            calculationBasis = radio.value;
+          }
+        });
+        
+        // Parse all values from strings to numbers
+        const annualRevenue = parseFormattedNumber(annualRevenueInput.value);
+        const downtimeDuration = parseFormattedNumber(downtimeDurationInput.value);
+        const affectedEmployees = parseFormattedNumber(affectedEmployeesInput.value);
+        const hourlyWage = parseFormattedNumber(hourlyWageInput.value);
+        const annualOverhead = parseFormattedNumber(annualOverheadInput.value);
+        const profitMargin = parseFormattedNumber(profitMarginInput.value);
+        const compliancePenalty = parseFormattedNumber(compliancePenaltyInput.value);
+        
+        // Validate required inputs
+        if (!annualRevenue || !downtimeDuration || !affectedEmployees || !hourlyWage) {
+          resultsContent.innerHTML = '<div class="results-placeholder">Please fill out all required fields</div>';
+          return;
+        }
+        
+        // Hours per year based on calculation basis
+        const hoursPerYear = calculationBasis === '24/7' ? 8760 : 2080;
+        
+        // Calculate revenue loss
+        const hourlyRevenue = annualRevenue / hoursPerYear;
+        const revenueLoss = hourlyRevenue * downtimeDuration;
+        
+        // Calculate productivity loss
+        const productivityLoss = affectedEmployees * hourlyWage * downtimeDuration;
+        
+        // Additional costs calculation (if provided)
+        let overheadLoss = 0;
+        let profitLoss = 0;
+        
+        if (annualOverhead) {
+          const hourlyOverhead = annualOverhead / hoursPerYear;
+          overheadLoss = hourlyOverhead * downtimeDuration;
+        }
+        
+        if (profitMargin) {
+          profitLoss = (revenueLoss * profitMargin) / 100;
+        }
+        
+        // Calculate total cost
+        const totalCost = revenueLoss + productivityLoss + overheadLoss + profitLoss + (compliancePenalty || 0);
+        
+        // Format results for display
+        const formattedResults = {
+          revenueLoss: formatNumberWithCommas(revenueLoss.toFixed(2)),
+          productivityLoss: formatNumberWithCommas(productivityLoss.toFixed(2)),
+          overheadLoss: overheadLoss ? formatNumberWithCommas(overheadLoss.toFixed(2)) : '',
+          profitLoss: profitLoss ? formatNumberWithCommas(profitLoss.toFixed(2)) : '',
+          compliancePenalty: compliancePenalty ? formatNumberWithCommas(compliancePenalty.toFixed(2)) : '',
+          totalCost: formatNumberWithCommas(totalCost.toFixed(2))
+        };
+        
+        // Display results
+        let resultsHTML = '';
+        resultsHTML += `<div class="result-item">Revenue Loss: $${formattedResults.revenueLoss}</div>`;
+        resultsHTML += `<div class="result-item">Productivity Loss: $${formattedResults.productivityLoss}</div>`;
+        
+        if (formattedResults.overheadLoss) {
+          resultsHTML += `<div class="result-item">Overhead Loss: $${formattedResults.overheadLoss}</div>`;
+        }
+        
+        if (formattedResults.profitLoss) {
+          resultsHTML += `<div class="result-item">Profit Loss: $${formattedResults.profitLoss}</div>`;
+        }
+        
+        if (formattedResults.compliancePenalty) {
+          resultsHTML += `<div class="result-item">Compliance/Penalty Cost: $${formattedResults.compliancePenalty}</div>`;
+        }
+        
+        resultsHTML += `<div class="result-item total-cost">Total Cost: $${formattedResults.totalCost}</div>`;
+        
+        resultsContent.innerHTML = resultsHTML;
+      });
+      
+      // Reset form
+      resetButton.addEventListener('click', function() {
+        // Reset radio buttons to default
+        document.getElementById('basisBusiness').checked = true;
+        
+        // Clear all input fields
+        formatInputs.forEach(input => {
+          input.value = '';
+        });
+        
+        // Reset results
+        resultsContent.innerHTML = '<div class="results-placeholder">Enter values and click Calculate to see results</div>';
+      });
+    });
+  </script>
+</body>
+</html>
